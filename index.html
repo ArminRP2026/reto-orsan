@@ -1,0 +1,953 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Orsan | Reto Mantén tu Meta</title>
+  <style>
+    :root {
+      --green-1: #0f6b50;
+      --green-2: #168a68;
+      --green-3: #1fb082;
+      --green-4: #dff7ee;
+      --yellow: #ffd166;
+      --orange: #ff9f43;
+      --red: #ef476f;
+      --ink: #18302a;
+      --muted: #5b6d67;
+      --bg: #f6fbf9;
+      --card: #ffffff;
+      --line: #d8e9e2;
+      --shadow: 0 18px 45px rgba(15, 107, 80, 0.12);
+      --radius-xl: 26px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top right, rgba(31,176,130,.16), transparent 22%),
+        radial-gradient(circle at left bottom, rgba(255,209,102,.14), transparent 20%),
+        var(--bg);
+    }
+
+    .wrap {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      padding: 34px 0 20px;
+    }
+
+    .hero-box {
+      position: relative;
+      overflow: hidden;
+      border-radius: 34px;
+      background: linear-gradient(135deg, #0f6b50 0%, #168a68 55%, #1fb082 100%);
+      color: white;
+      box-shadow: var(--shadow);
+      padding: 36px 34px 30px;
+    }
+
+    .hero-box::before,
+    .hero-box::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      opacity: .12;
+      background: white;
+    }
+
+    .hero-box::before {
+      width: 320px;
+      height: 320px;
+      top: -110px;
+      right: -60px;
+    }
+
+    .hero-box::after {
+      width: 180px;
+      height: 180px;
+      bottom: -70px;
+      left: -40px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 999px;
+      padding: 9px 14px;
+      font-weight: 700;
+      letter-spacing: .02em;
+      font-size: 13px;
+      backdrop-filter: blur(6px);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.25fr .75fr;
+      gap: 26px;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    h1 {
+      margin: 18px 0 14px;
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: .96;
+      letter-spacing: -.03em;
+    }
+
+    .sub {
+      margin: 0 0 18px;
+      font-size: clamp(16px, 2.2vw, 20px);
+      line-height: 1.55;
+      max-width: 760px;
+      color: rgba(255,255,255,.94);
+    }
+
+    .cta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 16px;
+      border-radius: 999px;
+      font-weight: 700;
+      font-size: 14px;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.18);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .btn-primary {
+      appearance: none;
+      border: 0;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 20px;
+      border-radius: 999px;
+      background: #ffffff;
+      color: var(--green-1);
+      font-weight: 900;
+      font-size: 14px;
+      box-shadow: 0 12px 24px rgba(0,0,0,.12);
+      transition: transform .18s ease, box-shadow .18s ease;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 28px rgba(0,0,0,.16);
+    }
+
+    .btn-outline {
+      appearance: none;
+      border: 1px solid var(--line);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 16px;
+      border-radius: 14px;
+      background: white;
+      color: var(--green-1);
+      font-weight: 800;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    .hero-visual {
+      display: grid;
+      gap: 14px;
+    }
+
+    .floating-card {
+      background: rgba(255,255,255,.96);
+      color: var(--ink);
+      border-radius: 24px;
+      padding: 18px;
+      box-shadow: 0 18px 38px rgba(0,0,0,.12);
+    }
+
+    .floating-card strong {
+      display: block;
+      font-size: 16px;
+      margin-bottom: 6px;
+    }
+
+    .scale-emoji {
+      font-size: 58px;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+
+    .mini-note {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .section {
+      padding: 14px 0 8px;
+    }
+
+    .grid-3, .grid-2 {
+      display: grid;
+      gap: 18px;
+    }
+
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow);
+      padding: 22px;
+    }
+
+    .card h2, .card h3 {
+      margin: 0 0 12px;
+      letter-spacing: -.02em;
+    }
+
+    .card h2 {
+      font-size: 28px;
+    }
+
+    .card h3 {
+      font-size: 20px;
+    }
+
+    .lead {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .info-item {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 14px 0;
+      border-top: 1px dashed var(--line);
+    }
+
+    .info-item:first-child { border-top: 0; padding-top: 0; }
+
+    .icon {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: var(--green-4);
+      font-size: 22px;
+      flex: 0 0 auto;
+    }
+
+    .info-item strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 15px;
+    }
+
+    .info-item span {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.55;
+      display: block;
+    }
+
+    .banner {
+      margin: 24px 0 6px;
+      border-radius: 26px;
+      background: linear-gradient(135deg, #fff8e6 0%, #fff2c8 100%);
+      border: 1px solid #ffe29a;
+      padding: 24px;
+      box-shadow: var(--shadow);
+    }
+
+    .banner h2 {
+      margin: 0 0 10px;
+      font-size: 30px;
+    }
+
+    .banner p {
+      margin: 0;
+      line-height: 1.7;
+      color: #5f5431;
+    }
+
+    .timeline {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .date-box {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 16px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .date-box .day {
+      font-size: 28px;
+      font-weight: 900;
+      color: var(--green-2);
+      line-height: 1;
+    }
+
+    .date-box .month {
+      margin-top: 8px;
+      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .date-box .desc {
+      margin-top: 10px;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.45;
+    }
+
+    .rules {
+      display: grid;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .rule {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 14px 16px;
+      background: #f8fcfa;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+    }
+
+    .rule b {
+      font-size: 15px;
+    }
+
+    .rule span {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+      display: block;
+      margin-top: 2px;
+    }
+
+    .accent-red { border-left: 6px solid var(--red); }
+    .accent-green { border-left: 6px solid var(--green-3); }
+    .accent-yellow { border-left: 6px solid var(--yellow); }
+    .accent-orange { border-left: 6px solid var(--orange); }
+
+    .quote {
+      font-size: 22px;
+      line-height: 1.45;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      margin: 0;
+    }
+
+    .quote small {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+
+    .food-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .food {
+      background: linear-gradient(180deg, #ffffff 0%, #f8fcfa 100%);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 18px;
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .food .emoji {
+      font-size: 44px;
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+
+    .food strong { display: block; margin-bottom: 6px; }
+    .food p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .footer {
+      padding: 14px 0 36px;
+    }
+
+    .footer-box {
+      background: linear-gradient(135deg, #133d31 0%, #0f6b50 100%);
+      color: white;
+      border-radius: 30px;
+      padding: 28px;
+      box-shadow: var(--shadow);
+    }
+
+    .footer-box h2 {
+      margin: 0 0 10px;
+      font-size: 34px;
+      letter-spacing: -.02em;
+    }
+
+    .footer-box p {
+      margin: 0 0 18px;
+      line-height: 1.7;
+      color: rgba(255,255,255,.92);
+    }
+
+    .tagline {
+      display: inline-block;
+      padding: 12px 16px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.18);
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    ul.clean {
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.75;
+      font-size: 14px;
+    }
+
+    .small-note {
+      margin-top: 14px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 20, 18, .56);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 999;
+    }
+
+    .modal.show { display: flex; }
+
+    .modal-card {
+      width: min(760px, 100%);
+      max-height: 92vh;
+      overflow: auto;
+      border-radius: 28px;
+      background: #fff;
+      border: 1px solid var(--line);
+      box-shadow: 0 28px 60px rgba(0,0,0,.22);
+    }
+
+    .modal-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 24px 24px 10px;
+    }
+
+    .modal-head h2 {
+      margin: 0 0 8px;
+      font-size: 28px;
+      letter-spacing: -.03em;
+    }
+
+    .modal-head p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 14px;
+    }
+
+    .close-btn {
+      appearance: none;
+      border: 0;
+      cursor: pointer;
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      background: #f1f7f4;
+      color: var(--green-1);
+      font-size: 22px;
+      font-weight: 800;
+      flex: 0 0 auto;
+    }
+
+    .modal-body {
+      padding: 10px 24px 24px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .field {
+      display: grid;
+      gap: 8px;
+    }
+
+    .field label {
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--ink);
+    }
+
+    .field input {
+      width: 100%;
+      border: 1px solid var(--line);
+      outline: none;
+      border-radius: 16px;
+      padding: 14px 14px;
+      font-size: 15px;
+      color: var(--ink);
+      background: #fff;
+      transition: border-color .18s ease, box-shadow .18s ease;
+    }
+
+    .field input:focus {
+      border-color: var(--green-3);
+      box-shadow: 0 0 0 4px rgba(31,176,130,.12);
+    }
+
+    .field small {
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.5;
+    }
+
+    .form-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .submit-btn {
+      appearance: none;
+      border: 0;
+      cursor: pointer;
+      padding: 14px 18px;
+      border-radius: 16px;
+      background: linear-gradient(135deg, #0f6b50 0%, #168a68 100%);
+      color: #fff;
+      font-weight: 900;
+      font-size: 14px;
+      box-shadow: 0 12px 24px rgba(15,107,80,.18);
+    }
+
+    .ghost-btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      cursor: pointer;
+      padding: 14px 18px;
+      border-radius: 16px;
+      background: #fff;
+      color: var(--ink);
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .helper-box {
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: 18px;
+      background: #f8fcfa;
+      border: 1px solid var(--line);
+      display: none;
+    }
+
+    .helper-box.show { display: block; }
+
+    .helper-box h3 {
+      margin: 0 0 8px;
+      font-size: 16px;
+    }
+
+    .helper-box p {
+      margin: 0 0 12px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .helper-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .status-msg {
+      margin-top: 12px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--muted);
+    }
+
+    @media (max-width: 980px) {
+      .hero-grid, .grid-3, .grid-2, .timeline, .food-strip, .form-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media print {
+      body {
+        background: white;
+      }
+      .hero, .section, .footer {
+        padding: 8px 0;
+      }
+      .wrap {
+        width: 100%;
+      }
+      .hero-box, .card, .banner, .date-box, .food, .footer-box {
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="hero-box">
+        <div class="hero-grid">
+          <div>
+            <div class="eyebrow">🔥 ORSAN PRESENTA · RETO MANTÉN TU META</div>
+            <h1>No se trata de sufrir.<br>Se trata de sostener.</h1>
+            <p class="sub">
+              Llega una nueva edición del reto para mantener y/o bajar de peso. Una dinámica pensada para quienes quieren construir disciplina, cuidar su salud y demostrar que sí se puede disfrutar la vida… sin dejar que la báscula se suba al drama.
+            </p>
+            <div class="cta-row">
+              <div class="pill">📅 Inicia: 28 de marzo</div>
+              <div class="pill">🏁 Cierre: 27 de junio</div>
+              <div class="pill">💰 Inscripción: $1,000</div>
+            </div>
+            <div class="hero-actions">
+              <button class="btn-primary" type="button" id="openSignupBtn">📝 Inscríbete al reto</button>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <div class="floating-card">
+              <div class="scale-emoji">⚖️</div>
+              <strong>La regla de oro</strong>
+              <div class="mini-note">Tu misión es clara: mantenerte igual o por debajo de tu meta acordada. Nada de “solo fue un fincito relajado” 😌.</div>
+            </div>
+            <div class="floating-card">
+              <strong>Hábitos > excusas</strong>
+              <div class="mini-note">12 semanas aprox. para que el enfoque no sea un arranque bonito de lunes, sino una disciplina real que se quede contigo.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section grid-3">
+      <article class="card">
+        <h3>🎯 ¿De qué trata?</h3>
+        <p class="lead">
+          Este reto está diseñado para reforzar el hábito de mantener tu peso ideal o seguir bajando con constancia. Aquí gana quien demuestra equilibrio, disciplina y compromiso con su meta personal.
+        </p>
+      </article>
+      <article class="card">
+        <h3>🙌 ¿Quiénes participan?</h3>
+        <p class="lead">
+          Quienes ya participaron antes conservan como referencia la meta que dejaron establecida en el reto anterior. Los nuevos integrantes deberán registrarse y pesarse a más tardar el <strong>2 de abril</strong>.
+        </p>
+      </article>
+      <article class="card">
+        <h3>💸 ¿Cómo entra el dinero?</h3>
+        <p class="lead">
+          La inscripción es de <strong>$1,000</strong> por participante y se podrá cubrir hasta el <strong>30 de abril</strong>. De ese monto, <strong>$100</strong> se destinan al desayuno de clausura y gastos administrativos; los <strong>$900</strong> son los que realmente participan en la bolsa.
+        </p>
+      </article>
+    </section>
+
+    <section class="section grid-2">
+      <article class="card">
+        <h2>Así funciona la dinámica</h2>
+        <div class="info-item">
+          <div class="icon">🗓️</div>
+          <div>
+            <strong>Inicio oficial del reto</strong>
+            <span>El nuevo reto arranca el <strong>28 de marzo</strong> y concluye el <strong>27 de junio</strong>.</span>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="icon">📍</div>
+          <div>
+            <strong>Lugar y hora oficiales</strong>
+            <span>Todos los pesajes se realizarán en la <strong>oficina de Legal</strong>, los <strong>sábados a las 8:30 a.m.</strong></span>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="icon">🎲</div>
+          <div>
+            <strong>Sorteo aleatorio</strong>
+            <span>En cada fecha de control se sortearán <strong>3 personas</strong>, sin importar género. Puede tocarte una vez, varias… o modo leyenda: todas.</span>
+          </div>
+        </div>
+        <div class="info-item">
+          <div class="icon">📉</div>
+          <div>
+            <strong>La meta no se rebasa</strong>
+            <span>El objetivo es <strong>igualar o mantenerse por debajo</strong> del peso meta acordado desde el inicio. Subir por encima de la meta implica descalificación automática.</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>Reglas clave, sin letra chiquita</h2>
+        <div class="rules">
+          <div class="rule accent-green">
+            <div>✅</div>
+            <div>
+              <b>Pesaje válido</b>
+              <span>Debe realizarse sin zapatos, con calcetines, sin llaves, sin cinturón, sin cartera, sin celular y con ropa cómoda.</span>
+            </div>
+          </div>
+          <div class="rule accent-red">
+            <div>⛔</div>
+            <div>
+              <b>Si subes por arriba de tu meta</b>
+              <span>Quedas descalificado automáticamente y pierdes tu aportación al fondo del reto. Sí, la báscula no negocia.</span>
+            </div>
+          </div>
+          <div class="rule accent-yellow">
+            <div>🧘</div>
+            <div>
+              <b>Báscula oficial en resguardo</b>
+              <span>Estará deshabilitada y bajo llave del <strong>4 al 25 de abril</strong>, con resguardo avalado por Legal/Auditoría. La idea: menos estrés, más enfoque, más vida bonita.</span>
+            </div>
+          </div>
+          <div class="rule accent-orange">
+            <div>🏆</div>
+            <div>
+              <b>¿Quiénes ganan?</b>
+              <span>Quienes lleguen a la última semana <strong>sin subir de peso</strong> compartirán en partes iguales el dinero acumulado de las personas descalificadas.</span>
+            </div>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <section class="banner">
+      <h2>“Mantenerte también es avanzar.”</h2>
+      <p>
+        No todo progreso se ve en una gran bajada. A veces, el verdadero reto está en sostener lo que ya lograste. Este desafío no premia la perfección, premia la constancia. Y sí, también premia sobrevivir a antojos, reuniones, puentes, tacos y a ese compa que siempre dice “por una no pasa nada”.
+      </p>
+    </section>
+
+    <section class="section">
+      <div class="card">
+        <h2>Calendario oficial de pesajes</h2>
+        <p class="lead">
+          Los pesajes de control serán quincenales. En cada fecha se pesarán <strong>3 personas seleccionadas al azar</strong>.
+        </p>
+        <div class="timeline">
+          <div class="date-box">
+            <div class="day">2</div>
+            <div class="month">Mayo</div>
+            <div class="desc">Primer pesaje oficial</div>
+          </div>
+          <div class="date-box">
+            <div class="day">16</div>
+            <div class="month">Mayo</div>
+            <div class="desc">Segundo control aleatorio</div>
+          </div>
+          <div class="date-box">
+            <div class="day">30</div>
+            <div class="month">Mayo</div>
+            <div class="desc">Tercer pesaje</div>
+          </div>
+          <div class="date-box">
+            <div class="day">13</div>
+            <div class="month">Junio</div>
+            <div class="desc">Cuarto control</div>
+          </div>
+          <div class="date-box">
+            <div class="day">27</div>
+            <div class="month">Junio</div>
+            <div class="desc">Última semana del reto</div>
+          </div>
+        </div>
+        <p class="small-note">
+          <strong>Importante:</strong> Si una persona sabe que no podrá asistir el día del pesaje, podrá pesarse <strong>un día antes</strong>. Ejemplo: si el control es el sábado 2 de mayo, el pesaje previo podrá realizarse el día anterior; si la fecha previa es inhábil o festiva, se recorrerá al día hábil aplicable para dejar registro. Si en el sorteo sí le toca participar, se tomará ese peso registrado; si no le toca, ese pesaje previo simplemente se omite y continúa normalmente en el reto.
+        </p>
+      </div>
+    </section>
+
+    <section class="section grid-2">
+      <article class="card">
+        <p class="quote">
+          “No viniste a competir con nadie más. Viniste a demostrarte que puedes sostener una versión de ti que te hace bien.”
+          <small>Y de paso, llevarte una lana si todo sale fino ✨</small>
+        </p>
+      </article>
+      <article class="card">
+        <h3>📌 En resumen</h3>
+        <ul class="clean">
+          <li>Registro para nuevos participantes: <strong>hasta el 2 de abril</strong>.</li>
+          <li>Pago de inscripción: <strong>hasta el 30 de abril</strong>.</li>
+          <li>Reto vigente: <strong>28 de marzo al 27 de junio</strong>.</li>
+          <li>Pesajes: sábados, <strong>8:30 a.m.</strong>, en Legal.</li>
+          <li>Cada fecha: <strong>3 personas por sorteo aleatorio</strong>.</li>
+          <li>Meta: <strong>no rebasar el peso acordado</strong>.</li>
+          <li>Quien sube de más: <strong>queda fuera</strong>.</li>
+          <li>Quien aguanta hasta el final: <strong>participa en la repartición</strong>.</li>
+        </ul>
+      </article>
+    </section>
+
+    <section class="section">
+      <div class="card">
+        <h2>Clausura con premio y desayuno</h2>
+        <p class="lead">
+          Porque cerrar bien también importa: al final del reto habrá desayuno de clausura. Se descontarán <strong>$100 por participante</strong> para cubrir desayuno, temas administrativos y organización del evento. Habrá <strong>tacos de guisos</strong>, y más adelante se enviarán las opciones para que cada persona elija su favorito. Salud, disciplina y taquitos: equilibrio premium.
+        </p>
+        <div class="food-strip">
+          <div class="food">
+            <div class="emoji">🌮</div>
+            <strong>Tacos de guiso</strong>
+            <p>Porque toda meta merece un final digno.</p>
+          </div>
+          <div class="food">
+            <div class="emoji">🥑</div>
+            <strong>Buen mood</strong>
+            <p>Esto también se trata de comunidad y motivación.</p>
+          </div>
+          <div class="food">
+            <div class="emoji">💪</div>
+            <strong>Disciplina real</strong>
+            <p>Pequeñas decisiones, repetidas muchas veces.</p>
+          </div>
+          <div class="food">
+            <div class="emoji">🏅</div>
+            <strong>Recompensa compartida</strong>
+            <p>El fondo acumulado se reparte entre quienes sí sostuvieron la meta.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="footer">
+      <div class="footer-box">
+        <h2>¿Listo para entrarle?</h2>
+        <p>
+          Este reto no busca presión absurda ni perfección imposible. Busca compromiso, constancia y una mejor relación con tus hábitos. Si el reto pasado te dejó una meta, esta es tu oportunidad de honrarla. Si vas empezando, esta puede ser la señal que estabas esperando para arrancar con todo.
+        </p>
+        <div class="tagline">ORSAN · Menos pretextos, más constancia, más vida chida.</div>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal" id="signupModal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="signupTitle">
+      <div class="modal-head">
+        <div>
+          <h2 id="signupTitle">Inscripción al reto</h2>
+          <p>Llena tus datos y al enviar se prepararán los mensajes de WhatsApp: uno de confirmación para el participante y otro para registrar su inscripción al número 2215648780.</p>
+        </div>
+        <button class="close-btn" type="button" id="closeSignupBtn" aria-label="Cerrar">×</button>
+      </div>
+      <div class="modal-body">
+        <form id="signupForm">
+          <div class="form-grid">
+            <div class="field">
+              <label for="nombre">Nombre</label>
+              <input id="nombre" name="nombre" type="text" placeholder="Ej. Armin" required />
+            </div>
+            <div class="field">
+              <label for="apellidos">Apellidos</label>
+              <input id="apellidos" name="apellidos" type="text" placeholder="Ej. Rivera López" required />
+            </div>
+            <div class="field">
+              <label for="pesoMeta">Peso meta</label>
+              <input id="pesoMeta" name="pesoMeta" type="number" min="1" step="0.1" placeholder="Ej. 78.5" required />
+            </div>
+            <div class="field">
+              <label for="celular">Celular</label>
+              <input id="celular" name="celular" type="tel" inputmode="numeric" placeholder="10 dígitos" required />
+              <small>Escribe el número del participante a 10 dígitos. El sistema lo convertirá a formato WhatsApp MX.</small>
+            </div>
+          </div>
+          <div class="form-actions">
+            <button class="submit-btn" type="submit">Enviar inscripción por WhatsApp</button>
+            <button class="ghost-btn" type="button" id="clearFormBtn">Limpiar</button>
+          </div>
+          <div class="status-msg" id="statusMsg"></div>
+          <div class="helper-box" id="helperBox">
+            <h3>Por si tu navegador se pone especial</h3>
+            <p>Intentaré abrir ambos WhatsApp automáticamente. Si alguno se bloquea, usa estos botones de respaldo.</p>
+            <div class="helper-links">
+              <a class="btn-outline" id="participantLink" href="#" target="_blank" rel="noopener noreferrer">WhatsApp participante</a>
+              <a class="btn-outline" id="adminLink" href="#" target="_blank" rel="noopener noreferrer">WhatsApp registro</a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+<script src="./app.js"></script>
+</body>
+</html>
