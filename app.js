@@ -1,5 +1,5 @@
 (function () {
-  const API_URL = "http://localhost:3000/api/registro";
+  const API_URL = "/api/registro";
 
   const openBtn = document.getElementById("openSignupBtn");
   const modal = document.getElementById("signupModal");
