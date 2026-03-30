@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 import { createClient } from "@supabase/supabase-js";
 
 dotenv.config();
@@ -18,8 +20,12 @@ if (!supabaseUrl || !supabaseKey) {
 
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 app.use(cors());
 app.use(express.json());
+app.use(express.static(__dirname));
 
 function sanitizeDigits(value) {
   return String(value || "").replace(/\D/g, "");
@@ -31,7 +37,7 @@ function isValidMexicanPhone(value) {
 }
 
 app.get("/", (req, res) => {
-  res.json({ ok: true, message: "Backend del reto Orsan funcionando" });
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 app.post("/api/registro", async (req, res) => {
@@ -94,6 +100,6 @@ app.post("/api/registro", async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Servidor corriendo en http://localhost:${port}`);
+app.listen(port, "0.0.0.0", () => {
+  console.log(`Servidor corriendo en http://0.0.0.0:${port}`);
 });
